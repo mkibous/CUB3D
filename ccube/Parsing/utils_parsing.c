@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:28:37 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/06/07 00:44:02 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/06/08 01:23:00 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,19 +55,18 @@ char	*skip_space(char *str, int flag)
 		i++;
 	}
 	if (flag)
-		i = 2;
+		i = 1;
 	else
-		i = 3;
+		i = 2;
 	tmp = malloc(sizeof(char) * j + 1);
 	j = 0;
-	while (str[i])
+	while (str[++i])
 	{
 		if (str[i] != ' ')
 		{
 			tmp[j] = str[i];
 			j++;
 		}
-		i++;
 	}
 	tmp[j] = '\0';
 	return (tmp);

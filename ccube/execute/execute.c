@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 11:08:09 by mkibous           #+#    #+#             */
-/*   Updated: 2024/06/07 19:46:05 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/06/08 16:52:50 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int ft_check(t_data *vars, float add_x, float add_y)
 		return (1);
 	if (vars->x + add_x < 0 || vars->x + add_x > vars->width)
 		return (1);
-	if (vars->map[(int)(vars->y + add_y)][(int)(vars->x + add_x)] == '1')
+	if (vars->map[(int)(vars->y + add_y)][(int)(vars->x + add_x)] != '0')
 		return (1);
 	if (vars->map[(int)(vars->y + add_y)][(int)(vars->x + add_x)] == '0')
 	{
@@ -186,8 +186,8 @@ void ft_get_color(t_data *vars, int *color)
 {
 	float a;
 	float b;
-	int n = 0x2d5a4b;
-	int s = 0x6F00FF;
+	// int n = 0x2d5a4b;
+	// int s = 0x6F00FF;
 	int e = 0x4E88A4;
 	int w = 0x7F8E72;
 
@@ -222,7 +222,7 @@ void ft_get_color(t_data *vars, int *color)
 		if (cos(vars->view) > 0)
 		{
 			if (a > (b + 0.001))
-				*color = s;
+				vars->wall_side = 's';
 			else if ((a + 0.001) < b)
 				*color = e;
 			else
@@ -231,7 +231,7 @@ void ft_get_color(t_data *vars, int *color)
 		else if (cos(vars->view) < 0)
 		{
 			if (a > (b + 0.001))
-				*color = s;
+				vars->wall_side = 's';
 			else if ((a + 0.001) < b)
 				*color = w;
 			else
@@ -243,7 +243,7 @@ void ft_get_color(t_data *vars, int *color)
 		if (cos(vars->view) > 0)
 		{
 			if (a > b)
-				*color = n;
+				vars->wall_side = 'n';
 			else if (a < b)
 				*color = e;
 			else
@@ -252,7 +252,7 @@ void ft_get_color(t_data *vars, int *color)
 		else
 		{
 			if (a > b)
-				*color = n;
+				vars->wall_side = 'n';
 			else if (a < b)
 				*color = w;
 			else
@@ -278,112 +278,245 @@ void ft_get_color(t_data *vars, int *color)
 //         j++;
 //     }
 // }
-void ft_drawline(t_data *vars, int x, int y, int color, int h2)
-{
-	int j = 0;
 
-	while (j < h2)
-	{
-		if (x < 0)
-			x = 0;
-		if (x >= vars->width * vars->size)
-			x = (vars->width * vars->size);
-		if (y < 0)
-			y = 0;
-		if (y >= vars->height * vars->size)
-			y = (vars->height * vars->size);
-		my_pixel_put(vars, x, y + j, color);
-		j++;
-	}
-}
-int ft_checkblack(t_data *vars, int h)
-{
-	if (h >= vars->r_black - 4 && h <= vars->r_black + 4)
-		return (1);
-	return (0);
-}
+// void ft_drawline(t_data *vars, int x, int y, int color, int h2)
+// {
+// 	int j = 0;
+
+// 	while (j < h2)
+// 	{
+// 		if (x < 0)
+// 			x = 0;
+// 		if (x >= vars->width * vars->size)
+// 			x = (vars->width * vars->size);
+// 		if (y < 0)
+// 			y = 0;
+// 		if (y >= vars->height * vars->size)
+// 			y = (vars->height * vars->size);
+// 		my_pixel_put(vars, x, y + j, color);
+// 		j++;
+// 	}
+// }
+// int ft_checkblack(t_data *vars, int h)
+// {
+// 	if (h >= vars->r_black - 4 && h <= vars->r_black + 4)
+// 		return (1);
+// 	return (0);
+// }
+// void ft_draw_ray(t_data *vars)
+// {
+// 	float i;
+// 	float j;
+// 	int h = 0;
+// 	int h2 = 0;
+// 	float a;
+// 	float b;
+// 	float tmp;
+// 	int color;
+
+// 	i = 0;
+// 	j = 0;
+// 	while (1)
+// 	{
+// 		if (ft_check(vars, ((i) / (float)vars->size), ((j) / (float)vars->size)))
+// 			break;
+// 		my_pixel_put2(vars, (vars->x + (i / vars->size)) * vars->size2, (vars->y + (j / vars->size)) * vars->size2, 0x00FF00);
+// 		i += (float)cos(vars->view);
+// 		j += (float)sin(vars->view);
+// 	}
+// 	vars->x_r = vars->x + (i / (float)vars->size);
+// 	vars->y_r = vars->y + (j / (float)vars->size);
+// 	a = vars->x_r - vars->x;
+// 	b = vars->y_r - vars->y;
+// 	if (a < 0)
+// 		a = -a;
+// 	if (b < 0)
+// 		b = -b;
+// 	vars->c = sqrt((a * a) + (b * b)) * cos(vars->al);
+// 	h2 = (((30) / vars->c) * 40);
+// 	if (h2 > vars->height * vars->size)
+// 		h2 = (vars->height * vars->size);
+// 	vars->med = (float)(((vars->height * vars->size)) / 2);
+// 	tmp = 0;
+// 	h = (vars->med + (h2 / (float)2));
+// 	tmp = h - h2;
+// 	if (vars->x3 <= 0)
+// 		vars->x3 = 0;
+// 	ft_get_color(vars, &color);
+// 	vars->prev_color = color;
+// 	vars->prev_h = h2;
+// 	if (color == 0x000000)
+// 	{
+// 		vars->black++;
+// 		if (vars->f_black == 0)
+// 			vars->r_black = h2;
+// 		if (h2 > vars->r_black)
+// 			vars->r_black = h2;
+// 		if (vars->f_black == 0)
+// 			vars->f_black = vars->x3;
+// 		vars->prev_black = h2;
+// 	}
+// 	if ((color != 0x000000 && vars->black > 0))
+// 	{
+// 		// ft_drawline(vars, vars->f_black - (vars->black / 2), vars->med - (vars->r_black / 2), 0xFFFFFF, vars->r_black);
+// 		vars->black = 0;
+// 		vars->f_black = 0;
+// 		vars->r_black = 0;
+// 		vars->prev_black = 0;
+// 	}
+// 	// 9bl ma dkhol katkon fl tht d ray
+// 	// vars. med - (h2 / 2) top
+// 	init_textures(vars->textures);
+// 	vars->textures->path = vars->alloc->no_path;
+// 	vars->textures->img = mlx_xpm_file_to_image(vars->mlx, vars->textures->path, &vars->textures->width, &vars->textures->height);
+// 	if (!vars->textures->img)
+// 		print_err_exit("Texture : not found", vars->alloc);
+// 	vars->textures->addr = mlx_get_data_addr(vars->textures->img, &vars->textures->bpp, &vars->textures->size_l, &vars->textures->endian);
+// 	get_texture_pixel(vars->textures, 0, 0);
+	// while (h >= vars->med - (h2 / 2) && h >= 0)
+	// {
+	// 	if (h < 0)
+	// 		h = 0;
+	// 	if (h >= vars->height * vars->size)
+	// 		h = (int)(vars->height * vars->size) - 1;
+	// 	if (vars->x3 < 0)
+	// 		vars->x3 = 0;
+	// 	if (vars->x3 >= vars->width * vars->size)
+	// 		vars->x3 = (vars->width * vars->size);
+	// 	// lbdya d render
+	// 	my_pixel_put(vars, vars->x3, h, color);
+	// 	h--;
+	// }
+// 	vars->x3 -= 1;
+// }
+
 void ft_draw_ray(t_data *vars)
 {
-	float i;
-	float j;
-	int h = 0;
-	int h2 = 0;
-	float a;
-	float b;
-	float tmp;
-	int color;
+    float i;
+    float j;
+    int h = 0;
+    int h2 = 0;
+    float a;
+    float b;
+    float tmp;
+    int color;
 
-	i = 0;
-	j = 0;
-	while (1)
+    i = 0;
+    j = 0;
+    while (1)
+    {
+        if (ft_check(vars, ((i) / (float)vars->size), ((j) / (float)vars->size)))
+            break;
+        my_pixel_put2(vars, (vars->x + (i / vars->size)) * vars->size2, (vars->y + (j / vars->size)) * vars->size2, 0x00FF00);
+        i += (float)cos(vars->view);
+        j += (float)sin(vars->view);
+    }
+    vars->x_r = vars->x + (i / (float)vars->size);
+    vars->y_r = vars->y + (j / (float)vars->size);
+    a = vars->x_r - vars->x;
+    b = vars->y_r - vars->y;
+    if (a < 0)
+        a = -a;
+    if (b < 0)
+        b = -b;
+    vars->c = sqrt((a * a) + (b * b)) * cos(vars->al);
+    h2 = (((30) / vars->c) * 40);
+    if (h2 > vars->height * vars->size)
+        h2 = (vars->height * vars->size);
+    vars->med = (float)(((vars->height * vars->size)) / 2);
+    tmp = 0;
+    h = (vars->med + (h2 / (float)2));
+    tmp = h - h2;
+    if (vars->x3 <= 0)
+        vars->x3 = 0;
+    ft_get_color(vars, &color);
+    vars->prev_color = color;
+    vars->prev_h = h2;
+    if (color == 0x000000)
+    {
+        vars->black++;
+        if (vars->f_black == 0)
+            vars->r_black = h2;
+        if (h2 > vars->r_black)
+            vars->r_black = h2;
+        if (vars->f_black == 0)
+            vars->f_black = vars->x3;
+        vars->prev_black = h2;
+    }
+    if ((color != 0x000000 && vars->black > 0))
+    {
+        vars->black = 0;
+        vars->f_black = 0;
+        vars->r_black = 0;
+        vars->prev_black = 0;
+    }
+	int x_offset;
+	int y_offset;
+
+	x_offset = (vars->x_r - floor(vars->x_r)) * vars->size;
+	y_offset = (vars->y_r - floor(vars->y_r)) * vars->size;
+	if (vars->wall_side == 'n')
 	{
-		if (ft_check(vars, ((i) / (float)vars->size), ((j) / (float)vars->size)))
-			break;
-		my_pixel_put2(vars, (vars->x + (i / vars->size)) * vars->size2, (vars->y + (j / vars->size)) * vars->size2, 0x00FF00);
-		i += (float)cos(vars->view);
-		j += (float)sin(vars->view);
+    	get_texture_pixel(vars->textures, 0, 0);
+    	while (h >= vars->med - (h2 / 2) && h >= 0)
+    	{
+    	    if (h < 0)
+    	        h = 0;
+    	    if (h >= vars->height * vars->size)
+    	        h = (int)(vars->height * vars->size) - 1;
+    	    if (vars->x3 < 0)
+    	        vars->x3 = 0;
+    	    if (vars->x3 >= vars->width * vars->size)
+    	        vars->x3 = (vars->width * vars->size);
+    	    int tex_x = (vars->x3 * vars->textures->width) / (vars->width * vars->size);
+    	    int tex_y = ((h - vars->med + (h2 / 2)) * vars->textures->height) / (vars->height * vars->size);
+    	    unsigned int color = get_texture_pixel(vars->textures, tex_x, tex_y);
+    	    my_pixel_put(vars, vars->x3, h, color);
+    	    h--;
+    	}
+		vars->wall_side = '0';
 	}
-	vars->x_r = vars->x + (i / (float)vars->size);
-	vars->y_r = vars->y + (j / (float)vars->size);
-	a = vars->x_r - vars->x;
-	b = vars->y_r - vars->y;
-	if (a < 0)
-		a = -a;
-	if (b < 0)
-		b = -b;
-	vars->c = sqrt((a * a) + (b * b)) * cos(vars->al);
-	h2 = (((30) / vars->c) * 40);
-	if (h2 > vars->height * vars->size)
-		h2 = (vars->height * vars->size);
-	vars->med = (float)(((vars->height * vars->size)) / 2);
-	tmp = 0;
-	h = (vars->med + (h2 / (float)2));
-	tmp = h - h2;
-	if (vars->x3 <= 0)
-		vars->x3 = 0;
-	ft_get_color(vars, &color);
-	vars->prev_color = color;
-	vars->prev_h = h2;
-	if (color == 0x000000)
+	if (vars->wall_side == 's')
 	{
-		vars->black++;
-		if (vars->f_black == 0)
-			vars->r_black = h2;
-		if (h2 > vars->r_black)
-			vars->r_black = h2;
-		if (vars->f_black == 0)
-			vars->f_black = vars->x3;
-		vars->prev_black = h2;
+    	get_texture_pixel(vars->textures, 0, 0);
+    	while (h >= vars->med - (h2 / 2) && h >= 0)
+    	{
+    	    if (h < 0)
+    	        h = 0;
+    	    if (h >= vars->height * vars->size)
+    	        h = (int)(vars->height * vars->size) - 1;
+    	    if (vars->x3 < 0)
+    	        vars->x3 = 0;
+    	    if (vars->x3 >= vars->width * vars->size)
+    	        vars->x3 = (vars->width * vars->size);
+    	    int tex_x = (vars->x3 * vars->textures->width) / (vars->width * vars->size);
+    	    int tex_y = ((h - vars->med + (h2 / 2)) * vars->textures->height) / (vars->height * vars->size);
+    	    unsigned int color = get_texture_pixel(vars->textures, tex_x, tex_y);
+    	    my_pixel_put(vars, vars->x3, h, color);
+    	    h--;
+    	}
+		vars->wall_side = '0';
 	}
-	if ((color != 0x000000 && vars->black > 0))
+	else
 	{
-		// ft_drawline(vars, vars->f_black - (vars->black / 2), vars->med - (vars->r_black / 2), 0xFFFFFF, vars->r_black);
-		vars->black = 0;
-		vars->f_black = 0;
-		vars->r_black = 0;
-		vars->prev_black = 0;
+		while (h >= vars->med - (h2 / 2) && h >= 0)
+		{
+			if (h < 0)
+				h = 0;
+			if (h >= vars->height * vars->size)
+				h = (int)(vars->height * vars->size) - 1;
+			if (vars->x3 < 0)
+				vars->x3 = 0;
+			if (vars->x3 >= vars->width * vars->size)
+				vars->x3 = (vars->width * vars->size);
+			// lbdya d render
+			my_pixel_put(vars, vars->x3, h, color);
+			h--;
+		}
 	}
-	// 9bl ma dkhol katkon fl tht d ray
-	// vars. med - (h2 / 2) top
-	// init_textures(vars->textures);
-	// vars->textures->img = mlx_xpm_file_to_image(vars->mlx, vars->textures->path, &vars->textures->width, &vars->textures->height);
-	// vars->textures->addr = mlx_get_data_addr(vars->textures->img, &vars->textures->bpp, &vars->textures->size_l, &vars->textures->endian);
-	while (h >= vars->med - (h2 / 2) && h >= 0)
-	{
-		if (h < 0)
-			h = 0;
-		if (h >= vars->height * vars->size)
-			h = (int)(vars->height * vars->size) - 1;
-		if (vars->x3 < 0)
-			vars->x3 = 0;
-		if (vars->x3 >= vars->width * vars->size)
-			vars->x3 = (vars->width * vars->size);
-		// lbdya d render
-		my_pixel_put(vars, vars->x3, h, color);
-		h--;
-	}
-	vars->x3 -= 1;
+    vars->x3 -= 1;
 }
+
 void ft_add(t_data *vars)
 {
 	if (vars->w)
@@ -547,12 +680,14 @@ void ft_execute(t_alloc *alloc)
 	vars.map = alloc->map;
 	vars.alloc = alloc;
 	vars.textures = alloc->textures;
+	init_textures(vars.textures);
 	ft_get_size(&vars);
 	vars.mlx = mlx_init();
 	vars.angle = M_PI / 3;
 	vars.size = 40;
 	vars.size2 = 10;
 	vars.win = mlx_new_window(vars.mlx, vars.width * vars.size, vars.height * vars.size, "Cub3D");
+	fille_img_addr(&vars, vars.textures);
 	mlx_hook(vars.win, 17, 1, ft_close, &vars);
 	mlx_hook(vars.win, 2, 1L << 0, ft_key, &vars);
 	mlx_hook(vars.win, 3, 1L << 1, ft_rel, &vars);

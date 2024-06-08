@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 16:55:11 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/06/07 00:44:56 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/06/08 01:24:24 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,23 +49,20 @@ char	**convert_tabs_space(char **str)
 	int		k;
 	char	**tmp;
 
-	i = 0;
 	j = 0;
-	while (str[i])
-		i++;
+	i = ft_strlen_2d(str);
 	tmp = malloc(sizeof(char *) * (i + 1));
 	i = -1;
 	while (str[++i])
 	{
 		tmp[j] = malloc(sizeof(char) * ft_strlen(str[i]) + 1);
-		k = 0;
-		while (str[i][k])
+		k = -1;
+		while (str[i][++k])
 		{
 			if (str[i][k] == '\t')
 				tmp[j][k] = ' ';
 			else
 				tmp[j][k] = str[i][k];
-			k++;
 		}
 		tmp[j][k] = '\0';
 		j++;

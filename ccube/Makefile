@@ -2,7 +2,7 @@ NAME = cub3D
 SRC = main.c ./execute/execute.c ./Parsing/parsing.c ./Get_next_line/get_next_line.c \
 	./Get_next_line/get_next_line_utils.c ./parsing/first_element.c ./parsing/utils_parsing.c \
 	./parsing/utils_parsing_2.c ./parsing/check_valid_elem.c ./parsing/check_map.c ./parsing/utils_parsing_3.c \
-	./parsing/check_element_f_c.c ./parsing/check_closed.c ./execute/textures.c
+	./parsing/check_element_f_c.c ./parsing/check_closed.c ./execute/textures.c ./parsing/utils_check.c
 CFLAGS = -Wall -Wextra -Werror #-g -fsanitize=address
 HEADER = cub3d.h
 LIBFT = libft/libft.a

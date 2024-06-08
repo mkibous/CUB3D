@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 15:44:27 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/06/06 22:18:39 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/06/08 01:21:35 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,18 +89,7 @@ void	get_map(t_alloc *alloc)
 	char	**tmp;
 
 	(1) && (i = 0, j = 0);
-	fd = open(alloc->map_path, O_RDONLY);
-	if (fd == -1)
-		print_err_exit("Error in opening Map file", alloc);
-	line = get_next_line(fd);
-	while (line != NULL)
-	{
-		i++;
-		free(line);
-		line = get_next_line(fd);
-	}
-	free(line);
-	close(fd);
+	i = count_line(alloc);
 	alloc->file = (char **)malloc(sizeof(char *) * (i + 1));
 	fd = open(alloc->map_path, O_RDONLY);
 	line = get_next_line(fd);

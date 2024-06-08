@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 19:11:50 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/06/06 22:18:05 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/06/08 01:16:08 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,25 +107,6 @@ void	check_last_line(char *tmp, t_alloc *alloc)
 			print_err_exit("Map Invalid : Map not closed in last line", alloc);
 		}
 		i++;
-	}
-}
-
-void	join_double_pointer(t_alloc *alloc, char **tmp, char **tmp_2)
-{
-	int	i;
-
-	i = -1;
-	while (alloc->map[++i])
-	{
-		free(*tmp_2);
-		*tmp_2 = NULL;
-		*tmp_2 = ft_strdup(*tmp);
-		free(*tmp);
-		*tmp = ft_strjoin(*tmp_2, alloc->map[i]);
-		if (!tmp)
-			print_err_exit("Malloc failed", alloc);
-		if (alloc->map[i + 1] == NULL)
-			free(*tmp_2);
 	}
 }
 

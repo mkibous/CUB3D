@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 18:22:35 by aitaouss          #+#    #+#             */
-/*   Updated: 2024/06/07 00:42:29 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/06/08 01:20:31 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	out_clean(t_alloc *alloc)
 	free(alloc->no_path);
 	free(alloc->rgb_c);
 	free(alloc->rgb_f);
+	free(alloc->textures);
 	free(alloc);
 }
 

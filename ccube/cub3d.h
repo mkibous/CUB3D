@@ -6,7 +6,7 @@
 /*   By: aitaouss <aitaouss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 11:06:47 by mkibous           #+#    #+#             */
-/*   Updated: 2024/06/07 19:31:54 by aitaouss         ###   ########.fr       */
+/*   Updated: 2024/06/08 16:54:21 by aitaouss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ typedef struct  s_data
     int f_black;
     int r_black;
     int prev_black;
+    char wall_side;
     t_alloc *alloc;
     t_textures  *textures;
 }               t_data;
@@ -177,6 +178,8 @@ void	print_element_map(t_alloc *alloc);
 void	check_invalid_elem(t_alloc *alloc, int i, int j);
 void	check_closed(t_alloc *alloc, int flag, int i, int j);
 void	check_arround(t_alloc *alloc);
+void	join_double_pointer(t_alloc *alloc, char **tmp, char **tmp_2);
+int     count_line(t_alloc *alloc);
 
 // clear
 void	out_clean(t_alloc *alloc);
@@ -188,8 +191,9 @@ void	check_element_ea(t_alloc *alloc, int i);
 void	check_element_no(t_alloc *alloc, int i);
 
 // textures
-void    init_textures(t_textures *textures);
-void    get_texture(t_alloc *alloc, t_textures *textures, t_data *data);
+void        init_textures(t_textures *textures);
+unsigned int get_texture_pixel(t_textures *textures, int x, int y);
+void        fille_img_addr(t_data *vars, t_textures *textures);
 
 // Map
 void    check_map(t_alloc *alloc);
