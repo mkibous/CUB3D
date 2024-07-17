@@ -6,7 +6,7 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 11:06:47 by mkibous           #+#    #+#             */
-/*   Updated: 2024/07/17 10:58:16 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/07/17 13:30:39 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@
 typedef struct  s_alloc t_alloc;
 typedef struct  s_data t_data;
 # define POV 1.0471975512
-# define TILE_SIZE 40
+# define TILE 40
 # define WINDOW_WIDTH 1600
 # define WINDOW_HEIGHT 720
 # define MINIMAP_WIDTH 14
@@ -130,6 +130,7 @@ void    ft_execute(t_alloc *alloc);
 void    ft_map(t_data *vars);
 int     ft_player(t_data *vars);
 void    ft_draw_ray(t_data *vars);
+int ft_check_wall(t_data *vars, double x, double y);
 void ft_wall(t_data *vars, int x, int y, int color);
 
 //aitaouss

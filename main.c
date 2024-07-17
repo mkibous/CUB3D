@@ -6,7 +6,7 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 11:06:44 by mkibous           #+#    #+#             */
-/*   Updated: 2024/06/06 16:21:49 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/07/17 16:39:27 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ int    main(int argc, char **argv)
 	init_alloc(alloc, argv);
 	get_map(alloc);
 	// print_stat(alloc, 0);
+	// start texture in ft_draw_ray in execute.c line 356 ***********
 	ft_execute(alloc);
 	out_clean(alloc);
 	return (0);
