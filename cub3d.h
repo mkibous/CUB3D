@@ -6,7 +6,7 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 11:06:47 by mkibous           #+#    #+#             */
-/*   Updated: 2024/07/14 09:35:15 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/07/17 10:58:16 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 
 // define color
 # define RESET    "\033[0m"
-# define MU      10000
+# define RESOLVE      100000
 # define RED	"\033[1;31m"
 # define G      "\033[1;32m"
 # define Y      "\033[1;33m"
@@ -44,7 +44,7 @@
 typedef struct  s_alloc t_alloc;
 typedef struct  s_data t_data;
 # define POV 1.0471975512
-# define TILE_SIZE (40 * MU)
+# define TILE_SIZE 40
 # define WINDOW_WIDTH 1600
 # define WINDOW_HEIGHT 720
 # define MINIMAP_WIDTH 14
@@ -56,7 +56,7 @@ typedef struct  s_data
     void    *win;
     int     height;
     int     width;
-    int    map_tsize;
+    // int    map_tsize;
     int  med;
     double   x;
     double   y;
@@ -64,26 +64,30 @@ typedef struct  s_data
     double hy;
     double vx;
     double vy;
+    int   wallx;
+    int   wally;
+    int   wallhit;
+    int    hit_index;
     int xs;
     int ys;
     int xstep;
     int ystep;
     double hc;
     double vc;
-    double   an;
+    // double   an;
     double   view;
     double   angle;
-    double   speed;
+    // double   speed;
     void   *img;
-    char *addr;
+    char *addr; 
     int   bpp;
     int   size_l;
     int   endian;
-    void *img_map;
-    char *addr_map;
-    int   bpp_map;
-    int   size_lmap;
-    int   endian_map;
+    // void *img_map;
+    // char *addr_map;
+    // int   bpp_map;
+    // int   size_lmap;
+    // int   endian_map;
     double up_down_x;
     double up_down_y;
     double lr_x;
@@ -99,7 +103,7 @@ typedef struct  s_data
     int d;
     double wall_height;
     t_alloc *alloc;
-    int mouse_on;
+    // int mouse_on;
 }               t_data;
 
 typedef struct	s_alloc

@@ -6,7 +6,7 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 11:08:09 by mkibous           #+#    #+#             */
-/*   Updated: 2024/07/14 09:35:13 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/07/17 10:58:16 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,33 +159,33 @@ void my_pixel_put(t_data *vars, int x, int y, int color)
     dst = vars->addr + (y * vars->size_l + x * (vars->bpp / 8));
     *(unsigned int *)dst = color;
 }
-void my_pixel_put2(t_data *vars, int x, int y, int color)
-{
-    char *dst;
+// void my_pixel_put2(t_data *vars, int x, int y, int color)
+// {
+//     char *dst;
 
-    dst = vars->addr_map + (y * vars->size_lmap + x * (vars->bpp_map / 8));
-    *(unsigned int *)dst = color;
-}
+//     dst = vars->addr_map + (y * vars->size_lmap + x * (vars->bpp_map / 8));
+//     *(unsigned int *)dst = color;
+// }
 void ft_get_color(t_data *vars, int *color)
 {
-    int n = 0x2d5a4b;
-    int s = 0x6F00FF;
-    int e = 0x4E88A4;
-    int w = 0x7F8E72;
+    int n = 0x45818E;
+    int s = 0x0101a1;
+    int e = 0x007CBA;
+    int w = 0x088da5;
 
     if(sin(vars->view) > 0)
     {
         if(cos(vars->view) > 0)
         {
             if(vars->vc == vars->c)
-                *color = s;
+                *color = n;
             else
                 *color = e;
         }
         else if(cos(vars->view) < 0)
         {
             if(vars->vc == vars->c)
-                *color = s;
+                *color = n;
             else
                 *color = w;
         }
@@ -195,14 +195,14 @@ void ft_get_color(t_data *vars, int *color)
         if(cos(vars->view) > 0)
         {
             if(vars->vc == vars->c)
-                *color = n;
+                *color = s;
             else
                 *color = e;
         }
         else
         {
             if(vars->vc == vars->c)
-                *color = n;
+                *color = s;
             else
                 *color = w;
         }
@@ -240,22 +240,22 @@ void ft_vertical_ray(t_data *vars)
 {
     double a;
     double b;
-    a = vars->x;
-    b = vars->y;
-    vars->vy = ((floor(b / TILE_SIZE) * TILE_SIZE));
+    a = vars->x * RESOLVE;
+    b = vars->y * RESOLVE;
+    vars->vy = ((floor(b / (TILE_SIZE * RESOLVE)) * (TILE_SIZE * RESOLVE)));
     if(vars->ys == 1)
-        vars->vy += TILE_SIZE;
+        vars->vy += (TILE_SIZE * RESOLVE);
     vars->vx = ((vars->vy - b) / tan(vars->view)) + a;
     
-    vars->ystep = TILE_SIZE;
-    vars->xstep = TILE_SIZE / tan(vars->view);
+    vars->ystep = (TILE_SIZE * RESOLVE);
+    vars->xstep = (TILE_SIZE * RESOLVE) / tan(vars->view);
     if(vars->xstep < 0)
         vars->xstep = -vars->xstep;
     vars->ystep *= vars->ys;
     vars->xstep *= vars->xs;
     if(vars->ys == -1)
         vars->vy--;
-    while (ft_check_wall(vars, vars->vx, vars->vy) == 0)
+    while (ft_check_wall(vars, vars->vx / RESOLVE, vars->vy / RESOLVE) == 0)
     {
             vars->vx += vars->xstep;
             vars->vy += vars->ystep;
@@ -269,22 +269,22 @@ void ft_horisontale(t_data *vars)
 
     double a;
     double b;
-    a = vars->x;
-    b = vars->y;
-    vars->hx = ((floor(a / TILE_SIZE)) * TILE_SIZE);
+    a = vars->x * RESOLVE;
+    b = vars->y * RESOLVE;
+    vars->hx = ((floor(a / ((TILE_SIZE * RESOLVE)))) * (TILE_SIZE * RESOLVE));
     if(vars->xs == 1)
-        vars->hx += TILE_SIZE;
+        vars->hx += (TILE_SIZE * RESOLVE);
     vars->hy = (vars->hx - a) * tan(vars->view);
     vars->hy = b + (vars->hy);
-    vars->xstep = TILE_SIZE;
-    vars->ystep = TILE_SIZE * tan(vars->view);
+    vars->xstep = (TILE_SIZE * RESOLVE);
+    vars->ystep = (TILE_SIZE * RESOLVE) * tan(vars->view);
     if(vars->ystep < 0)
         vars->ystep = -vars->ystep;
         vars->xstep *= vars->xs;
         vars->ystep *= vars->ys;
     if(vars->xs == -1)
         vars->hx--;
-    while (ft_check_wall(vars, vars->hx, vars->hy) == 0)
+    while (ft_check_wall(vars, vars->hx / RESOLVE, vars->hy/ RESOLVE) == 0)
     {
             vars->hx += vars->xstep;
             vars->hy += vars->ystep;
@@ -300,6 +300,7 @@ void ft_draw_ray(t_data *vars)
     int h = 0;
     int wall_height = 0;
     int color;
+    int testcolor;
 
     i = 0;
     j = 0;
@@ -323,12 +324,29 @@ void ft_draw_ray(t_data *vars)
         else
             vars->c = vars->hc;
     }
-    wall_height =  (TILE_SIZE / vars->c) * ((WINDOW_HEIGHT / 2) / tan(POV / 2));
+    if(vars->c == vars->vc)
+    {
+        vars->wallx = vars->vx / RESOLVE;
+        vars->wally = vars->vy / RESOLVE;
+        vars->wallhit = 1; // x
+    }
+    else
+    {
+        vars->wallx = vars->hx / RESOLVE;
+        vars->wally = vars->hy / RESOLVE;
+        vars->wallhit = 2; // y
+    }
+    wall_height =  ((TILE_SIZE * RESOLVE) / vars->c) * ((WINDOW_HEIGHT / 2) / tan(POV / 2));
     if(wall_height < 0)
         wall_height = -wall_height;
     vars->med = (WINDOW_HEIGHT / 2);
     h = (vars->med - (wall_height/2));
     ft_get_color(vars, &color);
+    if(vars->wallhit == 1)
+        vars->hit_index = (vars->wallx - (floor(vars->wallx / TILE_SIZE) * TILE_SIZE));
+    else
+        vars->hit_index = (vars->wally - (floor(vars->wally / TILE_SIZE) * TILE_SIZE));
+    testcolor = color + vars->hit_index;
     while (h <= vars->med + (wall_height / 2) && h < WINDOW_HEIGHT)
     {
         if(h < 0)
@@ -339,7 +357,7 @@ void ft_draw_ray(t_data *vars)
             vars->px_x = 0;
         if(vars->px_x >= WINDOW_WIDTH)
             vars->px_x = (WINDOW_WIDTH) - 1;
-        my_pixel_put(vars,  vars->px_x, h, color);
+        my_pixel_put(vars,  vars->px_x, h, testcolor);
         h++;
     }
     vars->px_x += 1;
@@ -401,13 +419,13 @@ int  ft_player(t_data *vars)
     }
     if (vars->img)
         mlx_destroy_image(vars->mlx, vars->img);
-    if(vars->img_map)
-        mlx_destroy_image(vars->mlx, vars->img_map);
-    vars->img_map = mlx_new_image(vars->mlx, MINIMAP_WIDTH * vars->map_tsize, MINIMAP_WIDTH * vars->map_tsize);
-    vars->addr_map = mlx_get_data_addr(vars->img_map, &vars->bpp_map, &vars->size_lmap, &vars->endian_map);
+    // if(vars->img_map)
+    //     mlx_destroy_image(vars->mlx, vars->img_map);
+    // vars->img_map = mlx_new_image(vars->mlx, MINIMAP_WIDTH * vars->map_tsize, MINIMAP_WIDTH * vars->map_tsize);
+    // vars->addr_map = mlx_get_data_addr(vars->img_map, &vars->bpp_map, &vars->size_lmap, &vars->endian_map);
     vars->img = mlx_new_image(vars->mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
     vars->addr = mlx_get_data_addr(vars->img, &vars->bpp, &vars->size_l, &vars->endian);
-    ft_map(vars);
+    // ft_map(vars);
     tmp = vars->view + (POV/2);
     v = vars->view;
     vars->view = v - (POV / 2);
@@ -424,70 +442,48 @@ int  ft_player(t_data *vars)
     vars->view = v;
     i = -2;
     mlx_put_image_to_window(vars->mlx, vars->win, vars->img, 0, 0);
-    mlx_put_image_to_window(vars->mlx, vars->win, vars->img_map, 0, 0);
+    // mlx_put_image_to_window(vars->mlx, vars->win, vars->img_map, 0, 0);
     return (0);
 }
 
-void ft_wall(t_data *vars, int x, int y, int color)
-{
-    int i;
-    int j;
+// void ft_wall(t_data *vars, int x, int y, int color)
+// {
+//     int i;
+//     int j;
 
-    i = 0;
-    while (i <= vars->map_tsize - 1)
-    {
-        j = 0;
-        while (j <= vars->map_tsize - 1)
-        {
-            my_pixel_put2(vars, (x * vars->map_tsize) + i, (y  * vars->map_tsize) + j, color);
-            j++;
-        }
-        i++;
-    }
-}
+//     i = 0;
+//     while (i <= vars->map_tsize - 1)
+//     {
+//         j = 0;
+//         while (j <= vars->map_tsize - 1)
+//         {
+//             my_pixel_put2(vars, (x * vars->map_tsize) + i, (y  * vars->map_tsize) + j, color);
+//             j++;
+//         }
+//         i++;
+//     }
+// }
 
-void ft_map(t_data *vars)
-{
-    int i;
-    int j;
+// void ft_map(t_data *vars)
+// {
+//     int i;
+//     int j;
 
-    i = vars->x / TILE_SIZE  - (int)(MINIMAP_WIDTH / 2);
-    j = vars->y / TILE_SIZE - (int)(MINIMAP_WIDTH / 2);
-    while (j < vars->height && j < (vars->y / TILE_SIZE) + (MINIMAP_WIDTH / 2))
-    {
-        i = vars->x / TILE_SIZE - (MINIMAP_WIDTH / 2);
-        while (i < (vars->x / TILE_SIZE) + (MINIMAP_WIDTH / 2) - 1)
-        {
-            if (i >= 0 && j >= 0 && j < vars->height && i < (int)ft_strlen(vars->map[j]) && vars->map[j][i] == '1')
-                ft_wall(vars, i - (floor(vars->x / TILE_SIZE) - (MINIMAP_WIDTH / 2)), j - (floor(vars->y / TILE_SIZE) - (MINIMAP_WIDTH / 2)), 0xFFFFFFF);
-            i++;
-        }
-        j++;
-    }
-    ft_wall(vars,(MINIMAP_WIDTH / 2), (MINIMAP_WIDTH / 2), 0xFF0000);
-}
-int ft_mouse(int key, int x, int y, t_data *vars)
-{
-    if(x < 0 || x > WINDOW_WIDTH || y < 0 || y > WINDOW_HEIGHT)
-        return (0);
-    if(key == 1)
-    {
-        vars->view_speed = -(1.5 * (M_PI / 180));
-        vars->mouse_on = 1;
-    }
-    if(key == 2)
-    {
-        vars->view_speed = 1.5 * (M_PI / 180);
-        vars->mouse_on = 1;
-    }
-    return (0);
-}
-int mouse_up(int key, int x, int y, t_data *vars)
-{
-    if((key == 1 || key == 2) && x >= 0 && x <= WINDOW_WIDTH && y >= 0 && y <= WINDOW_HEIGHT)
-        vars->view_speed = 0;
-    return (0);
-}
+//     i = vars->x / TILE_SIZE  - (int)(MINIMAP_WIDTH / 2);
+//     j = vars->y / TILE_SIZE - (int)(MINIMAP_WIDTH / 2);
+//     while (j < vars->height && j < (vars->y / TILE_SIZE) + (MINIMAP_WIDTH / 2))
+//     {
+//         i = vars->x / TILE_SIZE - (MINIMAP_WIDTH / 2);
+//         while (i < (vars->x / TILE_SIZE) + (MINIMAP_WIDTH / 2) - 1)
+//         {
+//             if (i >= 0 && j >= 0 && j < vars->height && i < (int)ft_strlen(vars->map[j]) && vars->map[j][i] == '1')
+//                 ft_wall(vars, i - (floor(vars->x / TILE_SIZE) - (MINIMAP_WIDTH / 2)), j - (floor(vars->y / TILE_SIZE) - (MINIMAP_WIDTH / 2)), 0xFFFFFFF);
+//             i++;
+//         }
+//         j++;
+//     }
+//     ft_wall(vars,(MINIMAP_WIDTH / 2), (MINIMAP_WIDTH / 2), 0xFF0000);
+// }
 
 void    ft_execute(t_alloc *alloc)
 {
@@ -497,15 +493,13 @@ void    ft_execute(t_alloc *alloc)
     vars.alloc = alloc;
    ft_get_size(&vars);
    vars.mlx = mlx_init();
-    vars.map_tsize = 10;
+    // vars.map_tsize = 10;
    vars.win = mlx_new_window(vars.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "Cub3D");
     vars.y = floor(vars.y * TILE_SIZE) + (TILE_SIZE / 2);
     vars.x = floor(vars.x * TILE_SIZE) + (TILE_SIZE / 2);
     mlx_hook(vars.win, 17, 1, ft_close, &vars);
     mlx_hook(vars.win, 2, 1L<<0, ft_key, &vars);
     mlx_hook(vars.win, 3, 1L<<1, ft_rel, &vars);
-    mlx_hook(vars.win, 4, 1L<<2, ft_mouse, &vars);
-    mlx_hook(vars.win, 5, 1L<<5, mouse_up, &vars);
     mlx_loop_hook(vars.mlx, ft_player, &vars);
     mlx_loop(vars.mlx);
 }
