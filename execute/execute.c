@@ -6,7 +6,7 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 11:08:09 by mkibous           #+#    #+#             */
-/*   Updated: 2024/07/17 16:49:41 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/07/19 08:56:54 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -367,7 +367,7 @@ void ft_draw_ray(t_data *vars)
         color = 0x007CBA;
     else if(color == 'w')
         color = 0x088da5;
-    testcolor = color + vars->hit_index;
+    testcolor = color + (vars->hit_index);
     // to here to delete colors
     // testcolor just to see the color change with the hit_index value
     // use color to know which texture to use

@@ -6,7 +6,7 @@
 /*   By: mkibous <mkibous@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 11:08:09 by mkibous           #+#    #+#             */
-/*   Updated: 2024/07/17 15:27:53 by mkibous          ###   ########.fr       */
+/*   Updated: 2024/07/19 08:51:18 by mkibous          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,26 +184,26 @@ void my_pixel_put2(t_data *vars, int x, int y, int color)
 }
 void ft_get_color(t_data *vars, int *color)
 {
-    int n = 0x45818E;
-    int s = 0x0101a1;
-    int e = 0x007CBA;
-    int w = 0x088da5;
+    // int n = 0x45818E;
+    // int s = 0x0101a1;
+    // int e = 0x007CBA;
+    // int w = 0x088da5;
 
     if(sin(vars->view) > 0)
     {
         if(cos(vars->view) > 0)
         {
             if(vars->vc == vars->c)
-                *color = n;
+                *color = 'n';
             else
-                *color = e;
+                *color = 'e';
         }
         else if(cos(vars->view) < 0)
         {
             if(vars->vc == vars->c)
-                *color = n;
+                *color = 'n';
             else
-                *color = w;
+                *color = 'w';
         }
     }
     else if(sin(vars->view) < 0)
@@ -211,16 +211,16 @@ void ft_get_color(t_data *vars, int *color)
         if(cos(vars->view) > 0)
         {
             if(vars->vc == vars->c)
-                *color = s;
+                *color = 's';
             else
-                *color = e;
+                *color = 'e';
         }
         else
         {
             if(vars->vc == vars->c)
-                *color = s;
+                *color = 's';
             else
-                *color = w;
+                *color = 'w';
         }
     }
 }
@@ -360,18 +360,25 @@ void ft_draw_ray(t_data *vars)
         vars->wally = vars->vy / RESOLVE;
         vars->wallhit = 1;
     }
+    if(vars->wallhit == 1)
+        vars->hit_index = (vars->wallx - (floor(vars->wallx / TILE) * TILE));
+    else
+        vars->hit_index = (vars->wally - (floor(vars->wally / TILE) * TILE));
     wall_height =  (TILE / vars->c) * ((WINDOW_HEIGHT / 2) / tan(POV / 2));
     if(wall_height < 0)
         wall_height = -wall_height;
     h = (vars->med - (wall_height/2));
     ft_get_color(vars, &color);
     if(ft_check_wall(vars, vars->wallx, vars->wally, 2) == 2)
-        color = 0x010152;
-    if(vars->wallhit == 1)
-        vars->hit_index = (vars->wallx - (floor(vars->wallx / TILE) * TILE));
-    else
-        vars->hit_index = (vars->wally - (floor(vars->wally / TILE) * TILE));
-    
+        color = 0x9f004a;
+    if(color == 'n')
+        color = 0x45818E;
+    else if(color == 's')
+        color = 0x0101a1;
+    else if(color == 'e')
+        color = 0x007CBA;
+    else if(color == 'w')
+        color = 0x088da5;
     testcolor = color + vars->hit_index;
     while (h <= vars->med + (wall_height / 2) && h < WINDOW_HEIGHT)
     {
